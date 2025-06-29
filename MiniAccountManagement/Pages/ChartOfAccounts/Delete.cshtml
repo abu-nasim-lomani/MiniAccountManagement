@@ -1,0 +1,38 @@
+﻿@page "{id:int}"
+@model MiniAccountManagement.Pages.ChartOfAccounts.DeleteModel
+@{
+    ViewData["Title"] = "Delete Confirmation";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">@ViewData["Title"]</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="text-danger">Are you sure you want to delete this account?</h5>
+                <p>This action cannot be undone. Our system performs a soft delete, which means the account will be marked as inactive but will remain in the database for historical records.</p>
+
+                <hr />
+
+                <dl class="row">
+                    <dt class="col-sm-4">Account Code</dt>
+                    <dd class="col-sm-8">: @Model.Account.AccountCode</dd>
+
+                    <dt class="col-sm-4">Account Name</dt>
+                    <dd class="col-sm-8">: @Model.Account.AccountName</dd>
+                </dl>
+
+                <form method="post">
+                    <input type="hidden" asp-for="Account.AccountID" />
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <a asp-page="./Index" class="btn btn-secondary ms-2">No, Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+﻿@page "{id:int}"
+@model MiniAccountManagement.Pages.ChartOfAccounts.EditModel
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">@ViewData["Title"]: @Model.Account.AccountName</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="Account.AccountID" />
+
+                    <div class="mb-3">
+                        <label asp-for="Account.AccountName" class="form-label"></label>
+                        <input asp-for="Account.AccountName" class="form-control" />
+                        <span asp-validation-for="Account.AccountName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Account.AccountCode" class="form-label"></label>
+                        <input asp-for="Account.AccountCode" class="form-control" />
+                        <span asp-validation-for="Account.AccountCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Account.ParentAccountID" class="form-label">Parent Account (Optional)</label>
+                        <select asp-for="Account.ParentAccountID" asp-items="Model.ParentAccountOptions" class="form-select">
+                            <option value="">-- No Parent --</option>
+                        </select>
+                        <span asp-validation-for="Account.ParentAccountID" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Update Account</button>
+                        <a asp-page="./Index" class="btn btn-secondary ms-2">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

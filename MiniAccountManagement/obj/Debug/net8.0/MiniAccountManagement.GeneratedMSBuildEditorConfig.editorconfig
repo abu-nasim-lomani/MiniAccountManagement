@@ -28,6 +28,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhcnRPZkFjY291bnRzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/ChartOfAccounts/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhcnRPZkFjY291bnRzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/ChartOfAccounts/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhcnRPZkFjY291bnRzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/ChartOfAccounts/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhcnRPZkFjY291bnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
