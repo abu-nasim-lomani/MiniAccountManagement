@@ -6,37 +6,32 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>@ViewData["Title"]</h1>
-    <a asp-page="./Create" class="btn btn-primary">Create New Account</a>
+    <div>
+        <a id="editBtn" class="btn btn-info disabled" href="#"><i class="fas fa-pencil-alt me-1"></i> </a>
+        <a id="deleteBtn" class="btn btn-danger disabled" href="#"><i class="fas fa-trash-alt me-1"></i> </a>
+        <a asp-page="./Create" class="btn btn-primary"><i class="fas fa-plus me-1"></i> </a>
+    </div>
 </div>
+<div class="card shadow-sm"><div class="card-body"><div id="accountTreeContainer"></div></div></div>
 
-<table class="table table-striped table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>Account Code</th>
-            <th>Account Name</th>
-            <th style="width: 15%;">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Accounts == null || !Model.Accounts.Any())
-        {
-            <tr>
-                <td colspan="3" class="text-center">No accounts found. Please create one.</td>
-            </tr>
-        }
-        else
-        {
-            @foreach (var account in Model.Accounts)
-            {
-                <tr>
-                    <td>@account.AccountCode</td>
-                    <td>@account.AccountName</td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@account.AccountID" class="btn btn-sm btn-info">Edit</a>
-                        <a asp-page="./Delete" asp-route-id="@account.AccountID" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <script>
+        $(function () {
+            $('#accountTreeContainer').jstree({
+                "core": { "themes": { "variant": "large" }, "data": { "url": "?handler=AccountsAsJson", "dataType": "json" } }
+            });
+            $('#accountTreeContainer').on("changed.jstree", function (e, data) {
+                if (data.selected.length) {
+                    var selectedId = data.selected[0];
+                    $('#editBtn').removeClass('disabled').attr('href', '/ChartOfAccounts/Edit/' + selectedId);
+                    $('#deleteBtn').removeClass('disabled').attr('href', '/ChartOfAccounts/Delete/' + selectedId);
+                } else {
+                    $('#editBtn').addClass('disabled').attr('href', '#');
+                    $('#deleteBtn').addClass('disabled').attr('href', '#');
+                }
+            });
+        });
+    </script>
+}

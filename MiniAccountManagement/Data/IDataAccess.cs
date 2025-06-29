@@ -1,4 +1,5 @@
 ﻿using MiniAccountManagement.Models;
+using System.Collections.Generic;
 namespace MiniAccountManagement.Data
 {
     public interface IDataAccess

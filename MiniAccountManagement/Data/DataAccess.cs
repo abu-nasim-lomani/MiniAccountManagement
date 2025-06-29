@@ -1,25 +1,23 @@
 ﻿using Dapper;
 using MiniAccountManagement.Models;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 namespace MiniAccountManagement.Data
 {
     public class DataAccess : IDataAccess
     {
-        private readonly IConfiguration _configuration;
         private readonly string _connectionString;
         public DataAccess(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-        // ... All 5 methods (GetAllAccounts, GetAccountById, etc.) using Dapper go here ...
-        // The code for the methods is exactly the same as the previous step.
         public List<ChartOfAccountModel> GetAllAccounts()
         {
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
-                return con.Query<ChartOfAccountModel>("sp_ManageChartOfAccounts", new { Action = "SELECT_ALL" }, commandType: CommandType.StoredProcedure).ToList();
+                return con.Query<ChartOfAccountModel>("sp_ManageChartOfAccounts", new { Action = "SELECT_ALL" }, commandType: CommandType.StoredProcedure).AsList();
             }
         }
         public ChartOfAccountModel GetAccountById(int accountId)
@@ -33,7 +31,7 @@ namespace MiniAccountManagement.Data
         {
             using (IDbConnection con = new SqlConnection(_connectionString))
             {
-                var parameters = new { Action = "CREATE", account.AccountName, account.AccountCode, account.ParentAccountID };
+                var parameters = new { Action = "CREATE", account.AccountName, account.ParentAccountID };
                 con.Execute("sp_ManageChartOfAccounts", parameters, commandType: CommandType.StoredProcedure);
             }
         }

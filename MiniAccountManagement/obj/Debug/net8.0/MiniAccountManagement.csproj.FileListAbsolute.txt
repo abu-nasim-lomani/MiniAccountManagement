@@ -9,6 +9,7 @@ D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debu
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\MiniAccountManagement.pdb
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Azure.Core.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Azure.Identity.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Dapper.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Humanizer.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -55,6 +56,7 @@ D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debu
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Composition.Runtime.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Composition.TypedParts.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Data.SqlClient.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Drawing.Common.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Memory.Data.dll
@@ -121,6 +123,11 @@ D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debu
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-arm64\native\sni.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x64\native\sni.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x86\native\sni.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
@@ -135,6 +142,7 @@ D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debu
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.MvcApplicationPartsAssemblyInfo.cache
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.RazorAssemblyInfo.cache
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.RazorAssemblyInfo.cs
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.sourcelink.json
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\scopedcss\bundle\MiniAccountManagement.styles.css
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\scopedcss\projectbundle\MiniAccountManagement.bundle.scp.css
@@ -149,11 +157,3 @@ D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debu
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.pdb
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.genruntimeconfig.cache
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\ref\MiniAccountManagement.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Dapper.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Data.SqlClient.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-arm64\native\sni.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x64\native\sni.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x86\native\sni.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
-D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.sourcelink.json

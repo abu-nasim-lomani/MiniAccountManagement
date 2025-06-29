@@ -1,0 +1,46 @@
+﻿@model MiniAccountManagement.Models.ChartOfAccountModel
+
+@{
+    var allAccounts = ViewData["AllAccounts"] as List<MiniAccountManagement.Models.ChartOfAccountModel>;
+    var level = (int)ViewData["Level"];
+}
+
+<div class="account-row">
+    <div class="account-code">
+        @if (level > 0)
+        {
+            @Html.Raw(string.Concat(Enumerable.Repeat("&nbsp;", level * 5)))
+            <i class="fa-solid fa-turn-up fa-rotate-90 text-muted me-2" style="font-size: 0.8em;"></i>
+        }
+        @Model.AccountCode
+    </div>
+
+    <div class="account-name">
+        @Model.AccountName
+    </div>
+
+    <div class="account-actions">
+        <a asp-page="./Edit" asp-route-id="@Model.AccountID" title="Edit">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+        <a asp-page="./Delete" asp-route-id="@Model.AccountID" title="Delete">
+            <i class="fas fa-trash-alt text-danger"></i>
+        </a>
+    </div>
+</div>
+
+@{
+    if (allAccounts != null)
+    {
+        var children = allAccounts.Where(a => a.ParentAccountID == Model.AccountID).ToList();
+        foreach (var child in children)
+        {
+            // We create a new dictionary and use the indexer to SET values safely.
+            var viewDataForPartial = new ViewDataDictionary(ViewData);
+            viewDataForPartial["AllAccounts"] = allAccounts;
+            viewDataForPartial["Level"] = level + 1;
+
+            <partial name="_AccountRowPartial" model="child" view-data="viewDataForPartial" />
+        }
+    }
+}

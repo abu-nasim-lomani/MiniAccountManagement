@@ -1,19 +1,24 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MiniAccountManagement.Data;
-using MiniAccountManagement.Models;
+using System.Linq;
 namespace MiniAccountManagement.Pages.ChartOfAccounts
 {
     public class IndexModel : PageModel
     {
         private readonly IDataAccess _dataAccess;
-        public List<ChartOfAccountModel> Accounts { get; set; }
-        public IndexModel(IDataAccess dataAccess)
+        public IndexModel(IDataAccess dataAccess) { _dataAccess = dataAccess; }
+        public void OnGet() { }
+        public JsonResult OnGetAccountsAsJson()
         {
-            _dataAccess = dataAccess;
-        }
-        public void OnGet()
-        {
-            Accounts = _dataAccess.GetAllAccounts();
+            var allAccounts = _dataAccess.GetAllAccounts();
+            var jstreeData = allAccounts.Select(account => new
+            {
+                id = account.AccountID.ToString(),
+                parent = account.ParentAccountID.HasValue ? account.ParentAccountID.ToString() : "#",
+                text = $"{account.AccountName} ({account.AccountCode})"
+            }).ToList();
+            return new JsonResult(jstreeData);
         }
     }
 }
