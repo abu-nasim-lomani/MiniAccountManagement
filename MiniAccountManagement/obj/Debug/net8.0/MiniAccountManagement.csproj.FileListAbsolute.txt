@@ -149,3 +149,11 @@ D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debu
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.pdb
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.genruntimeconfig.cache
 D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\ref\MiniAccountManagement.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\Dapper.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\System.Data.SqlClient.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-arm64\native\sni.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x64\native\sni.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win-x86\native\sni.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\obj\Debug\net8.0\MiniAccountManagement.sourcelink.json

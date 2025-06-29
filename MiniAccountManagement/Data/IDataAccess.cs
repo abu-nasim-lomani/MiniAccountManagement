@@ -1,0 +1,12 @@
+﻿using MiniAccountManagement.Models;
+namespace MiniAccountManagement.Data
+{
+    public interface IDataAccess
+    {
+        List<ChartOfAccountModel> GetAllAccounts();
+        ChartOfAccountModel GetAccountById(int accountId);
+        void AddAccount(ChartOfAccountModel account);
+        void UpdateAccount(ChartOfAccountModel account);
+        void DeleteAccount(int accountId);
+    }
+}
