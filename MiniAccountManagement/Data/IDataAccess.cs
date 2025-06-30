@@ -12,5 +12,6 @@ namespace MiniAccountManagement.Data
         void UpdateAccount(ChartOfAccountModel account);
         void DeleteAccount(int accountId);
         void SaveVoucher(VoucherViewModel voucher, string createdByUserId);
+        DashboardViewModel GetDashboardStats();
     }
 }

@@ -1,13 +1,24 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MiniAccountManagement.Data; 
+using MiniAccountManagement.Models;
 
 namespace MiniAccountManagement.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly IDataAccess _dataAccess;
+
+        public DashboardViewModel DashboardStats { get; set; }
+
+        public IndexModel(IDataAccess dataAccess)
+        {
+            _dataAccess = dataAccess;
+        }
+
         public void OnGet()
         {
-            // The logic to decide which view to show is now in the .cshtml file.
-            // So, this method can be empty.
+            DashboardStats = _dataAccess.GetDashboardStats();
         }
     }
 }

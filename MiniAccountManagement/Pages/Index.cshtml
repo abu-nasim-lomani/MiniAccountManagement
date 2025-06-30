@@ -1,7 +1,6 @@
 ﻿@page
 @model IndexModel
 @{
-    // The logic to select the correct layout file
     if (User.Identity != null && User.Identity.IsAuthenticated)
     {
         Layout = "_Layout";
@@ -14,10 +13,9 @@
     ViewData["Title"] = User.Identity.IsAuthenticated ? "Dashboard" : "Welcome";
 }
 
-@* Now, render the correct content partial view based on login status *@
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
-    <partial name="_DashboardPartial" />
+    <partial name="_DashboardPartial" model="Model" />
 }
 else
 {

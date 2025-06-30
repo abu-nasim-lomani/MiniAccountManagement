@@ -1,73 +1,137 @@
-﻿@* Pages/Shared/_DashboardPartial.cshtml *@
+﻿@model MiniAccountManagement.Pages.IndexModel
 
 <h4 class="mb-4">Dashboard Overview</h4>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="stat-card stat-card-1">
-            <h5>Total Accounts</h5>
-            <h2>1,250</h2>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Accounts</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.DashboardStats.TotalAccounts</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-sitemap fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="stat-card stat-card-2">
-            <h5>Active Users</h5>
-            <h2>85</h2>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Users</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.DashboardStats.ActiveUsers</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="stat-card stat-card-3">
-            <h5>Today's Transactions</h5>
-            <h2>$25,000</h2>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Today's Transactions</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">৳@Model.DashboardStats.TodaysTransactions.ToString("N2")</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="stat-card stat-card-4">
-            <h5>Pending Vouchers</h5>
-            <h2>12</h2>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Approvals</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.DashboardStats.PendingApprovals</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-clock fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-white">
                 <h5 class="mb-0">Recent Activity</h5>
             </div>
             <div class="card-body">
                 <div class="activity-item">
-                    <p class="mb-1"><strong>New account created by 'accountant@app.com'</strong></p>
+                    <p class="mb-1"><strong>New account 'Sales Revenue' created.</strong></p>
                     <p class="text-muted small mb-0">10 minutes ago</p>
                 </div>
                 <div class="activity-item">
-                    <p class="mb-1"><strong>User 'viewer@app.com' was approved by Admin</strong></p>
+                    <p class="mb-1"><strong>User 'viewer@app.com' was approved by Admin.</strong></p>
                     <p class="text-muted small mb-0">1 hour ago</p>
                 </div>
                 <div class="activity-item">
-                    <p class="mb-1"><strong>Voucher #JV-0012 was entered</strong></p>
+                    <p class="mb-1"><strong>Voucher #1001 was entered for ৳5,000.</strong></p>
                     <p class="text-muted small mb-0">Today at 9:00 AM</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-white">
                 <h5 class="mb-0">Quick Actions</h5>
             </div>
             <div class="card-body">
-                <a asp-page="/Vouchers/VoucherEntry" class="btn quick-action-btn">
-                    <i class="fas fa-plus-circle me-2"></i>New Voucher Entry
-                </a>
-                <a asp-page="/Admin/CreateUser" class="btn quick-action-btn">
-                    <i class="fas fa-user-plus me-2"></i>Add New User
-                </a>
-                <button class="btn quick-action-btn">
+                @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+                {
+                    <a asp-page="/Vouchers/VoucherEntry" class="btn quick-action-btn">
+                        <i class="fas fa-plus-circle me-2"></i>New Voucher Entry
+                    </a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-page="/Admin/CreateUser" class="btn quick-action-btn">
+                        <i class="fas fa-user-plus me-2"></i>Add New User
+                    </a>
+                }
+                <button class="btn quick-action-btn disabled" title="Coming soon!">
                     <i class="fas fa-file-download me-2"></i>Download Report
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+@* Some additional CSS for the new card styles, can be moved to site.css later *@
+<style>
+    .card .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: rgba(0,0,0,.03);
+        border-bottom: 1px solid rgba(0,0,0,.125);
+    }
+    .border-left-primary { border-left: .25rem solid #4e73df!important; }
+    .border-left-success { border-left: .25rem solid #1cc88a!important; }
+    .border-left-info { border-left: .25rem solid #36b9cc!important; }
+    .border-left-warning { border-left: .25rem solid #f6c23e!important; }
+    .text-xs { font-size: .7rem; }
+    .font-weight-bold { font-weight: 700!important; }
+    .text-gray-300 { color: #dddfeb!important; }
+    .text-gray-800 { color: #5a5c69!important; }
+</style>

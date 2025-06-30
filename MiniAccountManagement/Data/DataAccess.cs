@@ -99,5 +99,13 @@ namespace MiniAccountManagement.Data
                 return con.Query<VoucherListViewModel>("sp_GetVoucherList", commandType: CommandType.StoredProcedure).AsList();
             }
         }
+
+        public DashboardViewModel GetDashboardStats()
+        {
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                return con.QueryFirstOrDefault<DashboardViewModel>("sp_GetDashboardStats", commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }
