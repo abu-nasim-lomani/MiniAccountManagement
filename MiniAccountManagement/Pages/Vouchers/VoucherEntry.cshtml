@@ -12,7 +12,6 @@
         <div class="card-body p-4">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            @* --- Master Section --- *@
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label asp-for="Voucher.VoucherDate" class="form-label fw-bold"></label>
@@ -41,7 +40,6 @@
 
             <hr />
 
-            @* --- Details Section (Dynamic Table) --- *@
             <h5 class="mb-3">Voucher Details</h5>
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -54,7 +52,6 @@
                         </tr>
                     </thead>
                     <tbody id="voucher-details-body">
-                        @* Render initial rows from the backend *@
                         @for (var i = 0; i < Model.Voucher.Details.Count; i++)
                         {
                             <tr>
@@ -91,7 +88,6 @@
     </div>
 </form>
 
-@* This template will be used by JavaScript to create new rows. It is hidden from the user. *@
 <template id="detail-row-template">
     <tr>
         <td>
@@ -115,7 +111,6 @@
     }
     <script>
         $(document).ready(function () {
-            // Function to recalculate totals and check balance
             function calculateTotals() {
                 let totalDebit = 0;
                 let totalCredit = 0;
@@ -137,7 +132,6 @@
                 }
             }
 
-            // Function to add a new row
             function addNewRow() {
                 const template = document.getElementById('detail-row-template');
                 const newRowHtml = template.innerHTML;
@@ -147,7 +141,6 @@
                 $('#voucher-details-body').append(indexedHtml);
             }
 
-            // --- Event Handlers ---
 
             // 1. Add new row when "Add Line" button is clicked
             $('#addLineBtn').on('click', function () {
@@ -181,7 +174,6 @@
                 }
             });
 
-            // Initial calculation on page load
             calculateTotals();
         });
     </script>
