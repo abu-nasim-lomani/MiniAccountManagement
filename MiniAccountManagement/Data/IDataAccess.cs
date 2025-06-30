@@ -1,5 +1,6 @@
 ﻿using MiniAccountManagement.Models;
 using System.Collections.Generic;
+
 namespace MiniAccountManagement.Data
 {
     public interface IDataAccess
@@ -9,5 +10,6 @@ namespace MiniAccountManagement.Data
         void AddAccount(ChartOfAccountModel account);
         void UpdateAccount(ChartOfAccountModel account);
         void DeleteAccount(int accountId);
+        void SaveVoucher(VoucherViewModel voucher, string createdByUserId);
     }
 }
