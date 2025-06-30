@@ -1,0 +1,188 @@
+﻿@page
+@model MiniAccountManagement.Pages.Vouchers.VoucherEntryModel
+@{
+    ViewData["Title"] = "Voucher Entry";
+}
+
+<form method="post">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h4 class="mb-0">@ViewData["Title"]</h4>
+        </div>
+        <div class="card-body p-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            @* --- Master Section --- *@
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Voucher.VoucherDate" class="form-label fw-bold"></label>
+                    <input asp-for="Voucher.VoucherDate" class="form-control" type="date" />
+                    <span asp-validation-for="Voucher.VoucherDate" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Voucher.VoucherType" class="form-label fw-bold"></label>
+                    <select asp-for="Voucher.VoucherType" class="form-select">
+                        <option value="">Select Type...</option>
+                        <option value="Journal">Journal Voucher</option>
+                        <option value="Payment">Payment Voucher</option>
+                        <option value="Receipt">Receipt Voucher</option>
+                    </select>
+                    <span asp-validation-for="Voucher.VoucherType" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Voucher.ReferenceNo" class="form-label fw-bold"></label>
+                    <input asp-for="Voucher.ReferenceNo" class="form-control" />
+                </div>
+                <div class="col-12 mb-3">
+                    <label asp-for="Voucher.Narration" class="form-label fw-bold"></label>
+                    <textarea asp-for="Voucher.Narration" class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+
+            <hr />
+
+            @* --- Details Section (Dynamic Table) --- *@
+            <h5 class="mb-3">Voucher Details</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 50%;">Account</th>
+                            <th style="width: 20%;">Debit</th>
+                            <th style="width: 20%;">Credit</th>
+                            <th style="width: 10%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="voucher-details-body">
+                        @* Render initial rows from the backend *@
+                        @for (var i = 0; i < Model.Voucher.Details.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <select asp-for="Voucher.Details[i].AccountID" asp-items="Model.AccountOptions" class="form-select account-dropdown">
+                                        <option value="">Select Account...</option>
+                                    </select>
+                                </td>
+                                <td><input asp-for="Voucher.Details[i].DebitAmount" class="form-control text-end debit-input" placeholder="0.00" /></td>
+                                <td><input asp-for="Voucher.Details[i].CreditAmount" class="form-control text-end credit-input" placeholder="0.00" /></td>
+                                <td><button type="button" class="btn btn-danger btn-sm remove-row-btn"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="text-end">Total</th>
+                            <th class="text-end" id="totalDebit">0.00</th>
+                            <th class="text-end" id="totalCredit">0.00</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="text-center" id="balanceMessage"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3">
+                <button type="button" id="addLineBtn" class="btn btn-success"><i class="fas fa-plus me-1"></i> Add Line</button>
+                <button type="submit" class="btn btn-primary px-5">Save Voucher</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@* This template will be used by JavaScript to create new rows. It is hidden from the user. *@
+<template id="detail-row-template">
+    <tr>
+        <td>
+            <select name="Voucher.Details[__INDEX__].AccountID" class="form-select account-dropdown">
+                <option value="">Select Account...</option>
+                @foreach (var item in Model.AccountOptions)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </td>
+        <td><input type="text" name="Voucher.Details[__INDEX__].DebitAmount" class="form-control text-end debit-input" placeholder="0.00" /></td>
+        <td><input type="text" name="Voucher.Details[__INDEX__].CreditAmount" class="form-control text-end credit-input" placeholder="0.00" /></td>
+        <td><button type="button" class="btn btn-danger btn-sm remove-row-btn"><i class="fas fa-trash"></i></button></td>
+    </tr>
+</template>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Function to recalculate totals and check balance
+            function calculateTotals() {
+                let totalDebit = 0;
+                let totalCredit = 0;
+
+                $('#voucher-details-body tr').each(function () {
+                    let debit = parseFloat($(this).find('.debit-input').val()) || 0;
+                    let credit = parseFloat($(this).find('.credit-input').val()) || 0;
+                    totalDebit += debit;
+                    totalCredit += credit;
+                });
+
+                $('#totalDebit').text(totalDebit.toFixed(2));
+                $('#totalCredit').text(totalCredit.toFixed(2));
+
+                if (totalDebit === totalCredit && totalDebit > 0) {
+                    $('#balanceMessage').html('<span class="badge bg-success">Balanced</span>');
+                } else {
+                    $('#balanceMessage').html('<span class="badge bg-danger">Not Balanced</span>');
+                }
+            }
+
+            // Function to add a new row
+            function addNewRow() {
+                const template = document.getElementById('detail-row-template');
+                const newRowHtml = template.innerHTML;
+                const newIndex = $('#voucher-details-body tr').length;
+                const indexedHtml = newRowHtml.replace(/__INDEX__/g, newIndex);
+
+                $('#voucher-details-body').append(indexedHtml);
+            }
+
+            // --- Event Handlers ---
+
+            // 1. Add new row when "Add Line" button is clicked
+            $('#addLineBtn').on('click', function () {
+                addNewRow();
+            });
+
+            // 2. Remove row when a "remove" button is clicked (using event delegation)
+            $('#voucher-details-body').on('click', '.remove-row-btn', function () {
+                $(this).closest('tr').remove();
+                calculateTotals();
+            });
+
+            // 3. Recalculate totals whenever a debit or credit input changes
+            $('#voucher-details-body').on('input', '.debit-input, .credit-input', function () {
+                calculateTotals();
+            });
+
+            // 4. Ensure only one of Debit or Credit has a value in a row
+            $('#voucher-details-body').on('input', '.debit-input', function () {
+                if ($(this).val()) {
+                    $(this).closest('tr').find('.credit-input').val('').prop('disabled', true);
+                } else {
+                    $(this).closest('tr').find('.credit-input').prop('disabled', false);
+                }
+            });
+             $('#voucher-details-body').on('input', '.credit-input', function () {
+                if ($(this).val()) {
+                    $(this).closest('tr').find('.debit-input').val('').prop('disabled', true);
+                } else {
+                    $(this).closest('tr').find('.debit-input').prop('disabled', false);
+                }
+            });
+
+            // Initial calculation on page load
+            calculateTotals();
+        });
+    </script>
+}
