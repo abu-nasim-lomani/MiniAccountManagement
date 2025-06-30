@@ -1,0 +1,2 @@
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\wwwroot\css\dashboard.css
+D:\Nasim\QTECH Project Task\MiniAccountManagement\MiniAccountManagement\wwwroot\js\dashboard.js

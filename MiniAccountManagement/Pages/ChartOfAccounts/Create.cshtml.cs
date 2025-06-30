@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -5,6 +6,7 @@ using MiniAccountManagement.Data;
 using MiniAccountManagement.Models;
 namespace MiniAccountManagement.Pages.ChartOfAccounts
 {
+    [Authorize(Roles = "Admin,Accountant")]
     public class CreateModel : PageModel
     {
         private readonly IDataAccess _dataAccess;
