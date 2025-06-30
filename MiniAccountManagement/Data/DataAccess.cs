@@ -92,5 +92,12 @@ namespace MiniAccountManagement.Data
                 con.Execute("sp_SaveVoucher", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+        public List<VoucherListViewModel> GetVoucherList()
+        {
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                return con.Query<VoucherListViewModel>("sp_GetVoucherList", commandType: CommandType.StoredProcedure).AsList();
+            }
+        }
     }
 }

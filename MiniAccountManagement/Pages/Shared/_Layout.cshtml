@@ -1,17 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MiniAccountManagement</title>
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/MiniAccountManagement.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 <body>
+    @{
+        // This C# code gets the current page path to highlight the active link
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -22,12 +27,34 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark @((currentPage?.StartsWith("/ChartOfAccounts") ?? false) || (currentPage?.StartsWith("/Vouchers") ?? false) ? "active" : "")" href="#" id="navbarDropdownAccounting" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Accounting
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownAccounting">
+                                <li><a class="dropdown-item @(currentPage == "/ChartOfAccounts/Index" ? "active" : "")" asp-page="/ChartOfAccounts/Index">Chart of Accounts</a></li>
+                                <li><a class="dropdown-item @(currentPage == "/Vouchers/Index" ? "active" : "")" asp-page="/Vouchers/Index">Voucher List</a></li>
+                                
+                                @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+                                {
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item @(currentPage == "/Vouchers/VoucherEntry" ? "active" : "")" asp-page="/Vouchers/VoucherEntry">New Voucher Entry</a></li>
+                                }
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark @(currentPage?.StartsWith("/Admin") ?? false ? "active" : "")" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Administration
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                                    <li><a class="dropdown-item @(currentPage == "/Admin/UserManagement" ? "active" : "")" asp-page="/Admin/UserManagement">User Management</a></li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -42,13 +69,16 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - MiniAccountManagement - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - MiniAccountManagement
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <partial name="_Notification" />
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

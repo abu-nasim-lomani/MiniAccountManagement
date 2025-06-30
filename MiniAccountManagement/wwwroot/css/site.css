@@ -17,6 +17,26 @@ html {
   min-height: 100%;
 }
 
+
+
+
+/* --- Sticky Footer Fix using Flexbox --- */
+
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Make the body at least the full height of the browser window */
+}
+
+/* This targets the <div class="container"> that holds our main content.
+  'flex-grow: 1' tells it to expand and take up all available empty space,
+  which pushes the footer down.
+*/
+.container {
+    flex-grow: 1;
+}
+
+.navbar{
+    color: white;
 }

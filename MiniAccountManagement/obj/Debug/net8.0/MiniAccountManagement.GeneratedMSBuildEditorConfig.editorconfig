@@ -104,6 +104,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Vouchers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVm91Y2hlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Vouchers/VoucherEntry.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVm91Y2hlcnNcVm91Y2hlckVudHJ5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
