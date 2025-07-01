@@ -2,7 +2,7 @@
 using MiniAccountManagement.Models;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace MiniAccountManagement.Data

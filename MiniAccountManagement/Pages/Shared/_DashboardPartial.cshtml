@@ -1,0 +1,73 @@
+﻿@* Pages/Shared/_DashboardPartial.cshtml *@
+
+<h4 class="mb-4">Dashboard Overview</h4>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card stat-card-1">
+            <h5>Total Accounts</h5>
+            <h2>1,250</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card stat-card-2">
+            <h5>Active Users</h5>
+            <h2>85</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card stat-card-3">
+            <h5>Today's Transactions</h5>
+            <h2>$25,000</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card stat-card-4">
+            <h5>Pending Vouchers</h5>
+            <h2>12</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <div class="activity-item">
+                    <p class="mb-1"><strong>New account created by 'accountant@app.com'</strong></p>
+                    <p class="text-muted small mb-0">10 minutes ago</p>
+                </div>
+                <div class="activity-item">
+                    <p class="mb-1"><strong>User 'viewer@app.com' was approved by Admin</strong></p>
+                    <p class="text-muted small mb-0">1 hour ago</p>
+                </div>
+                <div class="activity-item">
+                    <p class="mb-1"><strong>Voucher #JV-0012 was entered</strong></p>
+                    <p class="text-muted small mb-0">Today at 9:00 AM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a asp-page="/Vouchers/VoucherEntry" class="btn quick-action-btn">
+                    <i class="fas fa-plus-circle me-2"></i>New Voucher Entry
+                </a>
+                <a asp-page="/Admin/CreateUser" class="btn quick-action-btn">
+                    <i class="fas fa-user-plus me-2"></i>Add New User
+                </a>
+                <button class="btn quick-action-btn">
+                    <i class="fas fa-file-download me-2"></i>Download Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

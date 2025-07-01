@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+#nullable disable
 
 using System;
 using System.Collections.Generic;
@@ -120,22 +122,6 @@ namespace MiniAccountManagement.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // --- THE NEW LOGIC STARTS HERE ---
-                    // Check if this is the very first user registering in the system (user count will be 1).
-                    if (_userManager.Users.Count() == 1)
-                    {
-                        // If it is the first user, automatically assign them the "Admin" role.
-                        await _userManager.AddToRoleAsync(user, "Admin");
-                        _logger.LogInformation($"User '{user.Email}' was automatically assigned the 'Admin' role as the first user.");
-                    }
-                    else
-                    {
-                        // For all subsequent users, assign a default "Viewer" role upon registration.
-                        // An admin can later change this role from the User Management page.
-                        await _userManager.AddToRoleAsync(user, "Viewer");
-                    }
-                    // --- END OF NEW LOGIC ---
-
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -145,9 +131,8 @@ namespace MiniAccountManagement.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    // This part for sending email can be commented out if you don't have an email sender configured.
-                    // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -1,10 +1,25 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    // The logic to select the correct layout file
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        Layout = "_Layout";
+    }
+    else
+    {
+        Layout = "_PublicLayout";
+    }
+
+    ViewData["Title"] = User.Identity.IsAuthenticated ? "Dashboard" : "Welcome";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@* Now, render the correct content partial view based on login status *@
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <partial name="_DashboardPartial" />
+}
+else
+{
+    <partial name="_LandingPagePartial" />
+}
