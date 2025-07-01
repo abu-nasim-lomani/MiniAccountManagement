@@ -1,4 +1,11 @@
-﻿@* Pages/Shared/_LandingPagePartial.cshtml *@
+﻿@page "/"
+@model LandingModel
+@{
+    // This tells the Landing page to use _PublicLayout as its template.
+    // The path should be just the name, not the full path.
+    Layout = "/Pages/Shared/_PublicLayout.cshtml";
+}
+
 <div class="text-center">
     <div class="p-5 mb-3 bg-light rounded-3">
         <div class="container-fluid py-2">

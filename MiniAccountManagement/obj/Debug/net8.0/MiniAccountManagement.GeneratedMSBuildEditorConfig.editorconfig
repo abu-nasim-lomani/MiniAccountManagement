@@ -220,24 +220,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhcnRPZkFjY291bnRzXF9BY2NvdW50Um93UGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Shared/_DashboardPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9EYXNoYm9hcmRQYXJ0aWFsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Shared/_LandingPagePartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYW5kaW5nUGFnZVBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Nasim/QTECH Project Task/MiniAccountManagement/MiniAccountManagement/Pages/Shared/_LoginPartial.cshtml]

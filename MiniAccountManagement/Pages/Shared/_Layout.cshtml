@@ -19,8 +19,8 @@
     }
     <nav class="navbar navbar-expand navbar-light bg-white shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-page="/Index">
-                <i class="fas fa-calculator me-2"></i>Account Management
+            <a class="navbar-brand" asp-page="/dashboard">
+                <i class="fas fa-calculator me-2"></i>Mini Account Management
             </a>
             <partial name="_LoginPartial" />
         </div>
@@ -32,7 +32,7 @@
                 <div class="sidebar p-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link @(currentPage == "/Index" ? "active" : "")" asp-page="/Index"><i class="fas fa-home"></i> Dashboard</a>
+                            <a class="nav-link @(currentPage == "/Index" ? "active" : "")" asp-page="/dashboard"><i class="fas fa-home"></i> Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(currentPage.StartsWith("/Vouchers") ? "active" : "")" asp-page="/Vouchers/Index"><i class="fas fa-file-invoice-dollar"></i> Vouchers</a>
