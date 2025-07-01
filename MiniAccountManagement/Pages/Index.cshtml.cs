@@ -1,24 +1,33 @@
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MiniAccountManagement.Data; 
 using MiniAccountManagement.Models;
+using MiniAccountManagement.Repositories.Interfaces;
 
 namespace MiniAccountManagement.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IDataAccess _dataAccess;
+        private readonly IDashboardRepository _dashboardRepo;
 
         public DashboardViewModel DashboardStats { get; set; }
 
-        public IndexModel(IDataAccess dataAccess)
+        public IndexModel(IDashboardRepository dashboardRepo)
         {
-            _dataAccess = dataAccess;
+            _dashboardRepo = dashboardRepo;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            DashboardStats = _dataAccess.GetDashboardStats();
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                DashboardStats = _dashboardRepo.GetDashboardStats();
+                return Page();
+            }
+            else
+            {
+                // If LOGGED OUT: Redirect them to our public landing page.
+                return RedirectToPage("/Landing");
+            }
         }
     }
 }

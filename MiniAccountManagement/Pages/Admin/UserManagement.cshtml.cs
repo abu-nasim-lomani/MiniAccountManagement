@@ -1,5 +1,3 @@
-// Pages/Admin/UserManagement.cshtml.cs
-
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,9 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using MiniAccountManagement.Data;
 using MiniAccountManagement.Models;
+using MiniAccountManagement.Repositories.Interfaces; 
 using System.Security.Claims;
 
 namespace MiniAccountManagement.Pages.Admin
@@ -21,30 +18,30 @@ namespace MiniAccountManagement.Pages.Admin
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<UserManagementModel> _logger;
-        private readonly IDataAccess _dataAccess; // This field was declared but not initialized.
+        // We inject the specific repository needed for our logic.
+        private readonly IVoucherRepository _voucherRepo;
 
         public List<UserWithRolesViewModel> UsersWithRoles { get; set; }
 
-        // --- THE FIX IS HERE ---
-        // We add IDataAccess to the constructor parameters.
         public UserManagementModel(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<UserManagementModel> logger,
-            IDataAccess dataAccess) // <-- Add this parameter
+            IVoucherRepository voucherRepo) // <-- Injecting the correct repository
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _logger = logger;
-            _dataAccess = dataAccess; // <-- And assign it here.
+            _voucherRepo = voucherRepo; // <-- Assigning the repository
         }
 
-        private async Task PopulateUsersList()
+        public async Task OnGetAsync()
         {
             var allRoles = await _roleManager.Roles.ToListAsync();
             var allUsers = await _userManager.Users.ToListAsync();
+
             UsersWithRoles = new List<UserWithRolesViewModel>();
             foreach (var user in allUsers)
             {
@@ -62,19 +59,14 @@ namespace MiniAccountManagement.Pages.Admin
             }
         }
 
-        public async Task OnGetAsync()
-        {
-            await PopulateUsersList();
-        }
-
         public async Task<IActionResult> OnPostUpdateRoleAsync(string userId, string newRole)
         {
-            // ... The rest of the methods remain the same as they are correct ...
             if (string.IsNullOrEmpty(newRole))
             {
                 TempData["ErrorMessage"] = "Please select a role to update.";
                 return RedirectToPage();
             }
+
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return NotFound();
 
@@ -86,10 +78,12 @@ namespace MiniAccountManagement.Pages.Admin
             {
                 await _userManager.UpdateSecurityStampAsync(user);
                 TempData["SuccessMessage"] = $"Role for {user.Email} updated successfully.";
+                _logger.LogInformation("Role for user {UserEmail} updated to {NewRole} by admin {AdminEmail}.", user.Email, newRole, User.Identity.Name);
             }
             else
             {
-                TempData["ErrorMessage"] = "Failed to update role.";
+                string errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                TempData["ErrorMessage"] = $"Failed to update role: {errors}";
             }
 
             if (User.FindFirst(ClaimTypes.NameIdentifier)?.Value == userId)
@@ -97,6 +91,7 @@ namespace MiniAccountManagement.Pages.Admin
                 await _signInManager.SignOutAsync();
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
+
             return RedirectToPage();
         }
 
@@ -106,22 +101,44 @@ namespace MiniAccountManagement.Pages.Admin
             if (user == null) return NotFound();
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            await _userManager.ConfirmEmailAsync(user, token);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
 
-            TempData["SuccessMessage"] = $"User {user.Email} has been approved.";
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = $"User {user.Email} has been approved.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to approve user.";
+            }
+
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostChangePasswordAsync(string userId, string newPassword)
         {
-            // ... code is correct
-            if (string.IsNullOrEmpty(newPassword)) { TempData["ErrorMessage"] = "New password cannot be empty."; return RedirectToPage(); }
+            if (string.IsNullOrEmpty(newPassword))
+            {
+                TempData["ErrorMessage"] = "New password cannot be empty.";
+                return RedirectToPage();
+            }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return NotFound();
+
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
-            if (result.Succeeded) { await _userManager.UpdateSecurityStampAsync(user); TempData["SuccessMessage"] = $"Password for '{user.Email}' has been changed successfully."; }
-            else { string errors = string.Join(", ", result.Errors.Select(e => e.Description)); TempData["ErrorMessage"] = $"Failed to change password: {errors}"; }
+
+            if (result.Succeeded)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                TempData["SuccessMessage"] = $"Password for '{user.Email}' has been changed successfully.";
+            }
+            else
+            {
+                string errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                TempData["ErrorMessage"] = $"Failed to change password: {errors}";
+            }
+
             return RedirectToPage();
         }
 
@@ -130,8 +147,7 @@ namespace MiniAccountManagement.Pages.Admin
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return NotFound();
 
-            // This check now correctly uses the injected _dataAccess field
-            if (_dataAccess.UserHasVouchers(userId))
+            if (_voucherRepo.UserHasVouchers(userId))
             {
                 TempData["ErrorMessage"] = $"Cannot delete user '{user.Email}'. This user has existing vouchers linked to them.";
                 return RedirectToPage();
@@ -160,13 +176,18 @@ namespace MiniAccountManagement.Pages.Admin
 
         public async Task<IActionResult> OnPostExportToExcelAsync()
         {
-            // ... code is correct
-            await PopulateUsersList();
-            var dataForExport = UsersWithRoles.Select(u => new { u.Email, u.CurrentRole, u.IsApproved }).ToList();
+            var allUsers = await _userManager.Users.ToListAsync();
+            var exportList = new List<object>();
+            foreach (var user in allUsers)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                exportList.Add(new { Email = user.Email, Role = roles.FirstOrDefault() ?? "No Role", IsApproved = user.EmailConfirmed });
+            }
+
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Users");
-                worksheet.Cell(1, 1).InsertTable(dataForExport, "UserList", true);
+                worksheet.Cell(1, 1).InsertTable(exportList, "UserList", true);
                 worksheet.Columns().AdjustToContents();
                 using (var stream = new MemoryStream())
                 {

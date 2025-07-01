@@ -2,37 +2,51 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MiniAccountManagement.Data;
 using MiniAccountManagement.Models;
+using MiniAccountManagement.Repositories.Interfaces;
+using System.Linq;
 
 namespace MiniAccountManagement.Pages.ChartOfAccounts
 {
     [Authorize(Roles = "Admin,Accountant")]
     public class EditModel : PageModel
     {
-        private readonly IDataAccess _dataAccess;
+        private readonly IChartOfAccountRepository _coaRepo;
 
         [BindProperty]
-        public ChartOfAccountModel Account { get; set; }
+        public ChartOfAccountModel Account { get; set; } = null!;
+        public SelectList ParentAccountOptions { get; set; } = null!;
 
-        public SelectList ParentAccountOptions { get; set; }
-
-        public EditModel(IDataAccess dataAccess)
+        public EditModel(IChartOfAccountRepository coaRepository)
         {
-            _dataAccess = dataAccess;
+            _coaRepo = coaRepository;
+        }
+
+        // A private helper to populate the dropdown, preventing code duplication
+        private void PopulateParentAccountDropdown(int currentAccountId)
+        {
+            // Exclude the current account from the list of possible parents
+            var accounts = _coaRepo.GetAllAccounts().Where(a => a.AccountID != currentAccountId).ToList();
+
+            // Format the display text to show "Code - Name"
+            var accountListForDropdown = accounts.Select(a => new {
+                a.AccountID,
+                DisplayText = $"{a.AccountCode} - {a.AccountName}"
+            }).ToList();
+
+            ParentAccountOptions = new SelectList(accountListForDropdown, "AccountID", "DisplayText", Account.ParentAccountID);
         }
 
         public IActionResult OnGet(int id)
         {
-            Account = _dataAccess.GetAccountById(id);
-
-            if (Account == null)
+            var account = _coaRepo.GetAccountById(id);
+            if (account == null)
             {
                 return NotFound();
             }
-            var accountsForDropdown = _dataAccess.GetAllAccounts().Where(a => a.AccountID != id).ToList();
-            ParentAccountOptions = new SelectList(accountsForDropdown, "AccountID", "AccountName");
 
+            Account = account;
+            PopulateParentAccountDropdown(id);
             return Page();
         }
 
@@ -40,12 +54,13 @@ namespace MiniAccountManagement.Pages.ChartOfAccounts
         {
             if (!ModelState.IsValid)
             {
-                var accountsForDropdown = _dataAccess.GetAllAccounts().Where(a => a.AccountID != Account.AccountID).ToList();
-                ParentAccountOptions = new SelectList(accountsForDropdown, "AccountID", "AccountName");
+                // If validation fails, repopulate the dropdown before showing the page again
+                PopulateParentAccountDropdown(Account.AccountID);
                 return Page();
             }
-            _dataAccess.UpdateAccount(Account);
 
+            _coaRepo.UpdateAccount(Account);
+            TempData["SuccessMessage"] = "Account updated successfully!";
             return RedirectToPage("./Index");
         }
     }

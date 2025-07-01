@@ -1,21 +1,31 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MiniAccountManagement.Data;
-using ClosedXML.Excel; // Required for Excel Export
+using MiniAccountManagement.Repositories.Interfaces; // Updated using statement
+using ClosedXML.Excel;
+using System.IO;
+using System.Linq;
+
 namespace MiniAccountManagement.Pages.ChartOfAccounts
 {
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly IDataAccess _dataAccess;
-        public IndexModel(IDataAccess dataAccess) { _dataAccess = dataAccess; }
+        // --- THE CHANGE IS HERE: Using the specific repository interface ---
+        private readonly IChartOfAccountRepository _coaRepo;
+
+        // The constructor now injects the specific repository
+        public IndexModel(IChartOfAccountRepository coaRepository)
+        {
+            _coaRepo = coaRepository;
+        }
 
         public void OnGet() { }
 
         public JsonResult OnGetAccountsAsJson()
         {
-            var allAccounts = _dataAccess.GetAllAccounts();
+            // Using the new repository to get data
+            var allAccounts = _coaRepo.GetAllAccounts();
             var jstreeData = allAccounts.Select(account => new
             {
                 id = account.AccountID.ToString(),
@@ -25,10 +35,10 @@ namespace MiniAccountManagement.Pages.ChartOfAccounts
             return new JsonResult(jstreeData);
         }
 
-        // --- NEW HANDLER FOR EXPORTING TO EXCEL ---
         public IActionResult OnPostExportToExcel()
         {
-            var accounts = _dataAccess.GetAllAccounts();
+            // Using the new repository to get data
+            var accounts = _coaRepo.GetAllAccounts();
 
             var dataForExport = accounts.Select(a => new {
                 a.AccountCode,
@@ -42,7 +52,6 @@ namespace MiniAccountManagement.Pages.ChartOfAccounts
             {
                 var worksheet = workbook.Worksheets.Add("Chart of Accounts");
                 worksheet.Cell(1, 1).InsertTable(dataForExport, "ChartOfAccounts", true);
-
                 worksheet.Columns().AdjustToContents();
 
                 using (var stream = new MemoryStream())
@@ -50,8 +59,6 @@ namespace MiniAccountManagement.Pages.ChartOfAccounts
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
                     string excelName = $"ChartOfAccounts-{System.DateTime.Now:yyyyMMddHHmmss}.xlsx";
-
-                    // Return the Excel file to the browser for download.
                     return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
                 }
             }

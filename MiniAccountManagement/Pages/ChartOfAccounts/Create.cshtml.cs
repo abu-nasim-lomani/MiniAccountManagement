@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MiniAccountManagement.Data;
 using MiniAccountManagement.Models;
+using MiniAccountManagement.Repositories.Interfaces; // <-- Updated using statement
 using System.Linq;
 
 namespace MiniAccountManagement.Pages.ChartOfAccounts
@@ -11,21 +11,24 @@ namespace MiniAccountManagement.Pages.ChartOfAccounts
     [Authorize(Roles = "Admin,Accountant")]
     public class CreateModel : PageModel
     {
-        private readonly IDataAccess _dataAccess;
+        // --- THE CHANGE IS HERE: Using the specific repository interface ---
+        private readonly IChartOfAccountRepository _coaRepo;
 
         [BindProperty]
         public ChartOfAccountModel Account { get; set; }
 
         public SelectList ParentAccountOptions { get; set; }
 
-        public CreateModel(IDataAccess dataAccess)
+        // The constructor now injects the specific repository
+        public CreateModel(IChartOfAccountRepository coaRepository)
         {
-            _dataAccess = dataAccess;
+            _coaRepo = coaRepository;
         }
 
         private void PopulateParentAccountDropdown()
         {
-            var accounts = _dataAccess.GetAllAccounts();
+            // Using the new repository to get data
+            var accounts = _coaRepo.GetAllAccounts();
 
             var accountListForDropdown = accounts.Select(a => new {
                 a.AccountID,
@@ -48,7 +51,9 @@ namespace MiniAccountManagement.Pages.ChartOfAccounts
                 return Page();
             }
 
-            _dataAccess.AddAccount(Account);
+            // Using the new repository to save data
+            _coaRepo.AddAccount(Account);
+
             TempData["SuccessMessage"] = "Account created successfully!";
             return RedirectToPage("./Index");
         }
