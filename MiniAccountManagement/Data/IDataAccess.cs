@@ -13,5 +13,7 @@ namespace MiniAccountManagement.Data
         void DeleteAccount(int accountId);
         void SaveVoucher(VoucherViewModel voucher, string createdByUserId);
         DashboardViewModel GetDashboardStats();
+        bool UserHasVouchers(string userId);
+        List<VoucherListViewModel> GetVoucherList(DateTime? startDate, DateTime? endDate);
     }
 }

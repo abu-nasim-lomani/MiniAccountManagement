@@ -6,37 +6,69 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>@ViewData["Title"]</h1>
-    <a asp-page="./VoucherEntry" class="btn btn-primary">
-        <i class="fas fa-plus me-1"></i> Create New Voucher
-    </a>
+    @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+    {
+        <a asp-page="./VoucherEntry" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus me-1"></i> Create New Voucher
+        </a>
+    }
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="post" class="row g-3 align-items-end">
+
+            @Html.AntiForgeryToken()
+
+            <div class="col-md-4">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input asp-for="StartDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="EndDate" class="form-label">End Date</label>
+                <input asp-for="EndDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-info me-2" formmethod="get" asp-page-handler="">Filter</button>
+
+                <button type="submit" asp-page-handler="ExportToExcel" class="btn btn-success">
+                    <i class="fas fa-file-excel me-1"></i> Export
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="card shadow-sm">
     <div class="card-body">
-        <table class="table table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Ref No.</th>
-                    <th>Narration</th>
-                    <th class="text-end">Amount</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var voucher in Model.VoucherList)
-                {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
                     <tr>
-                        <td>@voucher.VoucherDate.ToString("dd-MMM-yyyy")</td>
-                        <td>@voucher.VoucherType</td>
-                        <td>@voucher.ReferenceNo</td>
-                        <td>@voucher.Narration</td>
-                        <td class="text-end">@voucher.TotalAmount.ToString("N2")</td>
-                        <td><a href="#" class="btn btn-sm btn-info">Details</a></td>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Ref No.</th>
+                        <th>Narration</th>
+                        <th class="text-end">Amount</th>
+                        <th>Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var voucher in Model.VoucherList)
+                    {
+                        <tr>
+                            <td>@voucher.VoucherDate.ToString("dd-MMM-yyyy")</td>
+                            <td>@voucher.VoucherType</td>
+                            <td>@voucher.ReferenceNo</td>
+                            <td>@voucher.Narration</td>
+                            <td class="text-end">@voucher.TotalAmount.ToString("N2")</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-info">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

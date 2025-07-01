@@ -1,5 +1,6 @@
 ﻿@page
 @model MiniAccountManagement.Pages.ChartOfAccounts.IndexModel
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Chart of Accounts";
 }
@@ -7,24 +8,31 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>@ViewData["Title"]</h1>
     <div>
+        <form method="post" asp-page-handler="ExportToExcel" style="display:inline;">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-file-excel me-1"></i> Export
+            </button>
+        </form>
+
         @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
         {
             <a id="editBtn" class="btn btn-info disabled" href="#">
-                <i class="fas fa-pencil-alt me-1"></i> 
+                <i class="fas fa-pencil-alt"></i>
             </a>
         }
 
         @if (User.IsInRole("Admin"))
         {
             <a id="deleteBtn" class="btn btn-danger disabled" href="#">
-                <i class="fas fa-trash-alt me-1"></i> 
+                <i class="fas fa-trash-alt"></i>
             </a>
         }
 
         @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
         {
             <a asp-page="./Create" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i> 
+                <i class="fas fa-plus"></i>
             </a>
         }
     </div>
@@ -42,11 +50,21 @@
             $('#accountTreeContainer').on("changed.jstree", function (e, data) {
                 if (data.selected.length) {
                     var selectedId = data.selected[0];
-                    $('#editBtn').removeClass('disabled').attr('href', '/ChartOfAccounts/Edit/' + selectedId);
-                    $('#deleteBtn').removeClass('disabled').attr('href', '/ChartOfAccounts/Delete/' + selectedId);
+
+                    if ($('#editBtn').length) {
+                        $('#editBtn').removeClass('disabled').attr('href', '/ChartOfAccounts/Edit/' + selectedId);
+                    }
+                    if ($('#deleteBtn').length) {
+                        $('#deleteBtn').removeClass('disabled').attr('href', '/ChartOfAccounts/Delete/' + selectedId);
+                    }
+
                 } else {
-                    $('#editBtn').addClass('disabled').attr('href', '#');
-                    $('#deleteBtn').addClass('disabled').attr('href', '#');
+                    if ($('#editBtn').length) {
+                        $('#editBtn').addClass('disabled').attr('href', '#');
+                    }
+                    if ($('#deleteBtn').length) {
+                        $('#deleteBtn').addClass('disabled').attr('href', '#');
+                    }
                 }
             });
         });

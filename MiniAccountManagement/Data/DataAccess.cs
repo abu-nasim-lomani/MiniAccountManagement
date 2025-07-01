@@ -107,5 +107,23 @@ namespace MiniAccountManagement.Data
                 return con.QueryFirstOrDefault<DashboardViewModel>("sp_GetDashboardStats", commandType: CommandType.StoredProcedure);
             }
         }
+
+
+        public bool UserHasVouchers(string userId)
+        {
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                return con.QuerySingle<bool>("sp_CheckUserHasVouchers", new { UserId = userId }, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+
+        public List<VoucherListViewModel> GetVoucherList(DateTime? startDate, DateTime? endDate)
+        {
+            using (IDbConnection con = new SqlConnection(_connectionString))
+            {
+                return con.Query<VoucherListViewModel>("sp_GetVoucherList", new { StartDate = startDate, EndDate = endDate }, commandType: CommandType.StoredProcedure).AsList();
+            }
+        }
     }
 }
