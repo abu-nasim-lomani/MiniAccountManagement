@@ -27,15 +27,19 @@ namespace MiniAccountManagement.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            // --- THE FIX IS HERE ---
+            // Instead of staying on the logout page, we redirect the user
+            // to the root of the application. Our root page logic will then
+            // show the correct landing page.
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
             }
             else
             {
-                // This needs to be a redirect so that the browser performs a new
-                // request and the identity for the user gets updated.
-                return RedirectToPage();
+                // This is the most important change.
+                return LocalRedirect("~/");
             }
         }
     }

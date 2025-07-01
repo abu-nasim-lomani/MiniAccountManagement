@@ -112,6 +112,7 @@ namespace MiniAccountManagement.Pages.Admin
                 TempData["ErrorMessage"] = "Failed to approve user.";
             }
 
+            // Shobshomoy RedirectToPage() call korle notun kore OnGet() method call hobe
             return RedirectToPage();
         }
 

@@ -62,7 +62,7 @@
 
                                     @if (!user.IsApproved)
                                     {
-                                        <form method="post" asp--page-handler="ApproveUser" class="me-2 mb-1">
+                                        <form method="post" asp-page-handler="ApproveUser" class="me-2 mb-1">
                                             <input type="hidden" name="userId" value="@user.UserId" />
                                             <button type="submit" class="btn btn-success btn-sm">Approve</button>
                                         </form>

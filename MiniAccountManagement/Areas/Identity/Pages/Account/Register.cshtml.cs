@@ -110,8 +110,12 @@ namespace MiniAccountManagement.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
+                // Check if this will be the first user BEFORE creating them.
+                var isFirstUser = !_userManager.Users.Any();
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -122,28 +126,37 @@ namespace MiniAccountManagement.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    // --- THE NEW LOGIC IS HERE ---
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (isFirstUser)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        // If it's the first user, make them an Admin and auto-approve.
+                        await _userManager.AddToRoleAsync(user, "Admin");
+
+                        // Programmatically confirm the admin's email so they can log in immediately.
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        await _userManager.ConfirmEmailAsync(user, code);
+
+                        _logger.LogInformation("First user '{Email}' created and auto-approved as Admin.", user.Email);
+
+                        // Sign in the new admin immediately and redirect to the dashboard.
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect("/dashboard");
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        // For all other users, assign them the "Viewer" role and leave them unconfirmed.
+                        await _userManager.AddToRoleAsync(user, "Viewer");
+
+                        _logger.LogInformation("New user '{Email}' created. Awaiting admin approval.", user.Email);
+
+                        // Set a success message and redirect to the landing page.
+                        TempData["SuccessMessage"] = "Registration successful! Your account is pending admin approval.";
+                        return LocalRedirect("~/");
                     }
                 }
+
+                // If creation fails, add errors to the model state
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -153,7 +166,6 @@ namespace MiniAccountManagement.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-
         private IdentityUser CreateUser()
         {
             try
