@@ -47,11 +47,9 @@
                                     <input type="hidden" name="userId" value="@user.UserId" />
                                     <div class="input-group input-group-sm">
 
-                                        @* --- THE FIX IS HERE: The manual foreach loop is removed. --- *@
-                                        @* asp-for and asp-items will now correctly handle everything, including pre-selecting the current role. *@
                                         <select name="newRole" asp-for="@user.NewRole" asp-items="@user.RoleOptions" class="form-select"></select>
 
-                                        <button type="submit" class="btn btn-outline-primary">Update Role</button>
+                                        <button type="submit" class="btn btn-outline-primary">Update </button>
                                     </div>
                                 </form>
 
@@ -69,10 +67,10 @@
                                 {
                                     <button type="button" class="btn btn-danger btn-sm mb-1"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#deleteConfirmationModal"
+                                            data-bs-target="#deleteConfirmationMod al"
                                             data-user-id="@user.UserId"
                                             data-user-email="@user.Email">
-                                        Delete
+                                        X
                                     </button>
                                 }
                             </div>
