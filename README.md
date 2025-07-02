@@ -1,6 +1,6 @@
 # Mini Account Management System
 
-A full-featured, professional mini accounting application developed using ASP.NET Core Razor Pages and a Stored-Procedure-Only database approach. This project demonstrates a robust architecture following SOLID principles and the Repository Pattern, featuring a secure, role-based user management system and a dynamic, interactive user interface.
+A full-featured, professional mini accounting application developed using ASP.NET Core Razor Pages and a Stored-Procedure-Only database approach. This project demonstrates a robust architecture following the Repository Pattern, featuring a secure, role-based user management system and a dynamic, interactive user interface.
 
 ## 
 ### https://mdabunasim-001-site1.qtempurl.com/
