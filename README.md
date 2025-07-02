@@ -3,7 +3,9 @@
 A full-featured, professional mini accounting application developed using ASP.NET Core Razor Pages and a Stored-Procedure-Only database approach. This project demonstrates a robust architecture following SOLID principles and the Repository Pattern, featuring a secure, role-based user management system and a dynamic, interactive user interface.
 
 ## 
-
+https://mdabunasim-001-site1.qtempurl.com/
+Admin Login: admin@app.com
+Password: Shumonbd1@
 ![Dashboard](/Screenshort's/Dashboard.png)
 ---
 
